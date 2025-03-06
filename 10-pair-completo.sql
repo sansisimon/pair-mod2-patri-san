@@ -49,4 +49,46 @@ ON c.CategoryID = p.CategoryID;
 
 
 /* EJERCICIO 3
-*/
+Desde el equipo de ventas nos piden obtener una lista de todos los pedidos junto con los datos de las empresas 
+clientes. Sin embargo, hay algunos pedidos que pueden no tener un cliente asignado. Necesitamos asegurarnos de incluir 
+todos los pedidos, incluso si no tienen cliente registrado.*/
+
+SELECT *
+FROM Orders;
+
+SELECT COUNT(OrderID) AS numero_total_ordenes
+FROM Orders;-- HAY 830 ORDENES
+
+SELECT o.OrderID, o.CustomerID, c.CompanyName, c.Country
+FROM Orders AS o
+LEFT JOIN Customers AS c
+USING (CustomerID);-- < ME DEVUELVE 830 ROWS, ASÍ QUE ESTÁ BIEN.
+
+/* EJERCICIO 4
+El equipo de Recursos Humanos quiere saber qué empleadas han gestionado pedidos y cuáles no. Queremos 
+obtener una lista con todas las empleadas y, si han gestionado pedidos, mostrar los detalles del pedido.*/
+
+SELECT *
+FROM Orders;
+
+SELECT CONCAT (e.FirstName, ' ', e.LastName) AS Empleada, o.OrderID, c.CompanyName
+FROM Employees AS e
+LEFT JOIN Orders AS o USING (EmployeeID)
+INNER JOIN Customers AS c USING (CustomerID);
+
+
+/* EJERCICIO 5
+Desde el área de logística nos piden una lista de todos los transportistas (shippers) y los pedidos que han enviado. 
+Queremos asegurarnos de incluir todos los transportistas, incluso si no han enviado pedidos.*/
+
+SELECT *
+FROM Shippers;
+
+SELECT *
+FROM Orders;
+
+SELECT s.ShipperID, s.CompanyName, o.OrderID, c.CompanyName
+FROM Shippers AS s
+LEFT JOIN Orders AS o ON s.ShipperID = o.ShipVia
+INNER JOIN Customers AS c USING (CustomerID);
+
